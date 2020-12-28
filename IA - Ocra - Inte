@@ -1,0 +1,53 @@
+-- IA Ocra inteligencia flecha flamigera y helada
+
+DofusClass="9"
+
+
+function Main()
+    SpellTir_PuissantMoi71()
+    SpellFleche_MagiqueEnnemi13()
+    MoveFuyard()
+    --fighter:passTurn()
+end
+
+function SpellTir_PuissantMoi71()
+    if (fight:getCurrentTour() == 1 or fight:getCurrentTour() % 7 == 0) then
+        fight:launchSpellInCell(fight:getPlayerCell(), "Tir Puissant")
+        fight:launchSpellInCell(fight:getPlayerCell(), "Tir Eloigne")
+        fight:moveFarthestCell(fight:getNearestEnemy())
+    end
+end
+
+function SpellFleche_MagiqueEnnemi13()
+    distance = fight:getDistance(fight:getPlayerCell(), fight:getNearestEnemy())
+    util:debug(tostring(distance))
+    if (fight:getCurrentTour() == 1 or fight:getCurrentTour() % 1 == 0) then
+        if (distance == 2) then
+            util:debug('Es mayor a 2')
+            fight:moveFarthestCell(fight:getNearestEnemy())
+            fight:launchSpellInCell(fight:getNearestEnemy(), "Fleche Glacee")
+            fight:launchSpellInCell(fight:getNearestEnemy(), "Fleche Glacee")
+            fighter:passTurn()
+        end
+        if (distance >= 3) then
+            util:debug('Es mayor a 3')
+            fight:launchSpellInCell(fight:getNearestEnemy(), "Fleche Glacee")
+            fight:launchSpellInCell(fight:getNearestEnemy(), "Fleche Glacee")
+            fighter:passTurn()
+        end
+        if (fighter:isHandToHand()) then 
+            util:debug('Es 1')
+            fight:launchSpellInCell(fight:getNearestEnemy(), "Fleche Enflammee")
+            util:wait(3000)            
+            fight:moveFarthestCell(fight:getNearestEnemy())
+            if(not (fighter:isHandToHand())) then
+                fight:launchSpellInCell(fight:getNearestEnemy(), "Fleche Glacee")
+            end
+            fighter:passTurn()
+        end
+    end
+end
+
+function MoveFuyard()
+    fight:moveFarthestCell(fight:getNearestEnemy())
+end
